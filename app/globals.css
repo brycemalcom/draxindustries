@@ -52,6 +52,12 @@
     @apply border-border;
   }
   
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
   body {
     @apply bg-background text-foreground;
     background: linear-gradient(
@@ -59,8 +65,26 @@
       rgb(var(--background-start-rgb)),
       rgb(var(--background-end-rgb))
     );
-    background-attachment: fixed;
+    /* Remove fixed attachment for mobile performance */
+    background-attachment: local;
     font-family: var(--font-body);
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Mobile performance optimizations */
+  @media (max-width: 768px) {
+    body {
+      background-attachment: scroll;
+    }
+    
+    * {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -218,5 +242,54 @@
   }
   100% {
     background-position: 200% 0%;
+  }
+}
+
+/* Performance optimizations */
+.will-change-auto {
+  will-change: auto;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Image loading optimization */
+img {
+  content-visibility: auto;
+  contain: layout style paint;
+}
+
+/* Lazy loading improvements */
+.lazy-load {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.lazy-load.loaded {
+  opacity: 1;
+}
+
+/* Mobile touch improvements */
+@media (hover: none) and (pointer: coarse) {
+  .card-highlight:hover {
+    transform: none;
+    background: hsl(var(--card) / 0.5);
+  }
+  
+  button:hover {
+    transform: none;
   }
 }

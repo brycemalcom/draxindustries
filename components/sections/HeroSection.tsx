@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronDown } from "lucide-react";
@@ -10,19 +10,17 @@ import Image from "next/image";
 const HexagonGrid = () => {
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden">
-      <div className="hex-bg absolute inset-0 opacity-30"></div>
+      <div className="hex-bg absolute inset-0 opacity-20"></div>
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"></div>
     </div>
   );
 };
 
 export default function HeroSection() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.5;
-    }
+    setIsLoaded(true);
   }, []);
 
   return (
@@ -32,34 +30,22 @@ export default function HeroSection() {
           src="/images/graphene-lattice2.png"
           alt="Graphene Lattice Structure"
           fill
-          className="object-cover opacity-60"
+          className="object-cover opacity-40 transition-opacity duration-700"
           priority
+          quality={75}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background"></div>
       </div>
       
       <HexagonGrid />
-      
-      <div className="absolute inset-0 -z-20 opacity-20">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="object-cover h-full w-full"
-        >
-          <source src="https://static.videezy.com/system/resources/previews/000/038/893/original/alb_particlesFast03_preview.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background"></div>
-      </div>
       
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32">
         <div className="max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight mb-6">
               <span className="gradient-text">U.S. Graphene</span>{" "}
@@ -71,7 +57,12 @@ export default function HeroSection() {
               200x stronger than steel. Sustainable. Made in America.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            >
               <Button size="lg" variant="glow" className="group" asChild>
                 <Link href="#technology">
                   Our Technology
@@ -81,16 +72,21 @@ export default function HeroSection() {
               <Button size="lg" variant="outline" asChild>
                 <Link href="#invest">Partner With Us</Link>
               </Button>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
       
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <Link href="#problem">
-          <ChevronDown className="h-8 w-8 text-primary/70" />
+      <motion.div 
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+        initial={{ opacity: 0, y: -10 }}
+        animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
+        transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+      >
+        <Link href="#problem" className="block animate-bounce">
+          <ChevronDown className="h-8 w-8 text-primary/70 transition-colors hover:text-primary" />
         </Link>
-      </div>
+      </motion.div>
     </section>
   );
 }
