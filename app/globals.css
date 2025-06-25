@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 10;
+  --background-end-rgb: 28, 28, 28;
+  
+  --font-sans: var(--font-montserrat);
+  --font-body: var(--font-roboto);
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 6%;
+    --foreground: 0 0% 98%;
+    
+    --card: 0 0% 11%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 43 77% 52%;
+    --primary-foreground: 0 0% 6%;
+    
+    --secondary: 0 0% 29%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 0 0% 11%;
+    --muted-foreground: 0 0% 75%;
+    
+    --accent: 0 0% 75%;
+    --accent-foreground: 0 0% 6%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 43 77% 52%;
+    
+    --cyan: 180 100% 50%;
+    
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    background: linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    );
+    background-attachment: fixed;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    @apply font-bold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+}
+
+@layer components {
+  .container-section {
+    @apply container max-w-6xl mx-auto px-4 sm:px-6 py-8;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  }
+
+  .badge-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/80;
+  }
+
+  .badge-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      hsl(43 77% 52%) 0%,
+      hsl(43 77% 62%) 50%,
+      hsl(43 77% 52%) 100%
+    );
+  }
+  
+  .card-highlight {
+    @apply relative overflow-hidden rounded-lg border bg-card/50 p-4 text-card-foreground backdrop-blur-sm transition-all duration-300;
+  }
+  
+  .card-highlight:hover {
+    @apply translate-y-[-2px] bg-card/80;
+  }
+
+  .card-highlight:hover::before {
+    opacity: 0.8;
+  }
+  
+  .card-highlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(90deg, 
+      hsl(43 77% 52% / 0.3),
+      hsl(43 77% 62% / 0.3)
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.parallax {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  letter-spacing: -0.5px;
+}
+
+.section-divider {
+  position: relative;
+  height: 2rem;
+  background: linear-gradient(to bottom, transparent, rgba(var(--background-start-rgb), 0.5));
+  overflow: hidden;
+}
+
+.section-divider::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(43 77% 52% / 0.2), transparent);
+}
+
+.hex-bg {
+  position: relative;
+}
+
+.hex-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.03;
+  background-image: radial-gradient(
+    hsl(43 77% 52% / 0.2) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  z-index: -1;
+}
+
+.animated-gradient-border {
+  position: relative;
+}
+
+.animated-gradient-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, 
+    hsl(43 77% 52% / 0.3),
+    hsl(43 77% 62% / 0.3),
+    hsl(43 77% 52% / 0.3));
+  background-size: 200% 100%;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-shine 4s linear infinite;
+}
+
+@keyframes border-shine {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
